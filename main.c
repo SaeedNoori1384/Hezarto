@@ -6,6 +6,7 @@ char map[200][200];
 int visited[200][200];
 int ROWS, COLS;
 
+int Rx , Ry ,Hx , Hy, Cx ,Cy;
 int depth(int x1 , int y1 , int x2 , int y2){
     int a = x1-x2;
     int b = y1-y2;
@@ -17,41 +18,6 @@ int depth(int x1 , int y1 , int x2 , int y2){
     }
     return a+b;
 }
-//int moverightup(int x1 ,int y1 , int x2 , int y2){
-//    if( x1>=0 && y1>=0 && x2>=0 && y2>=0){
-//        if((x1 == x2)&&(y1 == y2)){
-//            return 1 ;
-//        }else if((map[x1][y1+1] == '.' &&(moverightup(x1 , y1+1 , x2 , y2) == 1)) || (x1-1>=0 && map[x1-1][y1] == '.' &&(moverightup(x1-1 , y1 , x2 , y2) == 1))){
-//            return 1;
-//        }else{
-//            return 0;
-//        }
-//    } else{return 0;}
-//}
-//int moverighdown(int x1 ,int y1 , int x2 , int y2){
-//    if(x1>=0 && y1>=0 && x2>=0 && y2>=0){
-//        if((x1 == x2) && (y1 == y2)) {
-//            return 1;
-//        }else if((map[x1+1][y1] == '.' && moverighdown(x1+1 , y1 , x2 , y2) == 1) || ( map[x1][y1+1] == '.' && moverighdown(x1 , y1+1 , x2 , y2) == 1)){
-//            return 1;
-//        }else{
-//            return 0;
-//        }
-//    } else{
-//        return 0;
-//    }
-//}
-//int CanMove(int x1 ,int y1 , int x2 , int y2){
-//    if(x1>x2 && y1<y2){
-//        return moverightup(x1 ,y1 , x2 , y2);
-//    } else if(x1>x2 && y1>y2){
-//        return moverighdown(x2 , y2 , x1 , y1);
-//    } else if(x1<x2 && y1<y2){
-//        return moverighdown(x1 , y1 , x2 , y2);
-//    } else{
-//        return moverightup(x2 ,y2 , x1 , y1);
-//    }
-//}
 int dx[4] = {0, 0, 2, -2};
 int dy[4] = {2, -2, 0, 0};
 
@@ -80,7 +46,6 @@ int IsMapFullyConnected(int n, int m) {
         for (int j = 0; j < COLS; j++)
             visited[i][j] = 0;
 
-    // پیدا کردن اولین خانه زوج
     int sx = -1, sy = -1;
     for (int i = 0; i < ROWS; i += 2) {
         for (int j = 0; j < COLS; j += 2) {
@@ -98,7 +63,6 @@ int IsMapFullyConnected(int n, int m) {
 
     dfs(sx, sy);
 
-    // چک همه خانه‌های زوج
     for (int i = 0; i < ROWS; i += 2) {
         for (int j = 0; j < COLS; j += 2) {
             if (!visited[i][j])
@@ -146,7 +110,6 @@ void makerandommap(int n , int m , int R , int H ,int W){
         map[2*(r/n)][2*(r%m)]= 'C';
         array[0][0] = 2*(r/n);
         array[1][0] = 2*(r%m);
-
         int j = 0;
         while (j != H){
             r = rand()%(n*m);
@@ -157,7 +120,6 @@ void makerandommap(int n , int m , int R , int H ,int W){
                 j++;
             }
         }
-
         int i = 0;
         while (i != R){
             r = rand()%(n*m);
@@ -206,8 +168,6 @@ void makerandommap(int n , int m , int R , int H ,int W){
                 i++;
             }
         }
-
-
         if(y == 1 || !IsMapFullyConnected(n , m)){
             ok = 0;
         } else{
@@ -215,11 +175,83 @@ void makerandommap(int n , int m , int R , int H ,int W){
         }
     }
 }
-int checkendgame(int x1 , int y1 , int x2 , int y2){
-    if(x1 == x2 && y1 == y2){
+// 1    |   up
+// 2   ___  right
+// 3    |   down
+// 4   ___  left
+int moveRunner(int n , int m , int direct){
+    if(direct == 1 && Rx-2>=0){
+        if(map[Rx-2][Ry] == '.'){
+            map[Rx-2][Ry] = 'R';
+            map[Rx][Ry] = '.';
+            Rx-=2 ;
+        }
+        if(map[Rx-2][Ry] == 'C'){
+            Rx-=2;
+        }
+    }else if(direct == 2 && Ry+2<=2*m-2){
+        if(map[Rx][Ry+2] == '.'){
+            map[Rx][Ry+2] = 'R';
+            map[Rx][Ry] = '.';
+            Ry+=2;
+        }
+        if(map[Rx][Ry+2] == 'C'){
+            Ry+=2;
+        }
+    }else if(direct == 3 && Rx+2<=2*n-2){
+        if(map[Rx+2][Ry] == '.'){
+            map[Rx+2][Ry] = 'R';
+            map[Rx][Ry] = '.';
+            Rx+=2;
+        }
+        if(map[Rx+2][Ry] == 'C'){
+            Rx+=2;
+        }
+    }else if(direct == 4 && Ry-2>=0){
+        if(map[Rx][Ry-2] == '.'){
+            map[Rx][Ry-2] = 'R';
+            map[Rx][Ry] = '.';
+            Ry-=2;
+        }
+        if(map[Rx][Ry-2] == 'C'){
+            Ry-=2;
+        }
+    }
+}
+// win R 1
+// win H 2
+// not end 0
+int checkendgame(){
+    if(Rx == Hx && Ry == Hy){
+        return 2;
+    }
+    if(Rx == Cx && Ry == Cy){
         return 1;
     }
     return 0;
+}
+int Game(int n , int m){
+    printf("\n\nStart of game : ...\n\n");
+    int direct ;
+    while (1){
+        scanf("%d" , &direct);
+        moveRunner(n , m , direct);
+        for (int i = 0; i < 2*n-1; i++) {
+            for (int j = 0; j < 2*m-1; j++) {
+                printf(" %c " , map[i][j]);
+            }
+            printf("\n");
+        }
+        printf("\n");
+        printf("\n");
+        if(checkendgame() == 2){
+            printf("Hunters won :(");
+            break;
+        } else if(checkendgame() == 1){
+            printf("Congradulations\nYou won :)");
+            break;
+        }
+    }
 }
 int main() {
     srand(time(NULL));
@@ -229,9 +261,7 @@ int main() {
 
     int H , R , W;
     scanf("%d %d %d" , &H ,&R ,&W);
-
-    while(checkendgame(x1 , y1 , x2 , y2) == 0){
-    }
+//    scanf("%d" , &W);
     int t = n*m;
     if(t%2 == 0){
         t = t/2;
@@ -246,16 +276,33 @@ int main() {
             }
             printf("\n");
         }
-        printf("\n");
-        printf("\n");
-        for (int i = 0; i < 2*n-1; i+=2) {
-            for (int j = 0; j < 2*m-1; j+=2) {
-                printf("%c " , map[i][j]);
-            }
-            printf("\n");
-        }
     } else{
         printf("No Exist !!!\n");
     }
+    for (int i = 0; i < 2*n-1; i++) {
+        for (int j = 0; j < 2*m-1; j++) {
+            if(map[i][j] == 'R'){
+                Rx = i;
+                Ry = j;
+            }
+        }
+    }
+    for (int i = 0; i < 2*n-1; i++) {
+        for (int j = 0; j < 2*m-1; j++) {
+            if(map[i][j] == 'H'){
+                Hx = i;
+                Hy = j;
+            }
+        }
+    }
+    for (int i = 0; i < 2*n-1; i++) {
+        for (int j = 0; j < 2*m-1; j++) {
+            if(map[i][j] == 'C'){
+                Cx = i;
+                Cy = j;
+            }
+        }
+    }
+    Game(n , m);
     return 0;
 }
