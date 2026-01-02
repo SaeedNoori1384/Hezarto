@@ -180,42 +180,65 @@ void makerandommap(int n , int m , int R , int H ,int W){
 // 3    |   down
 // 4   ___  left
 int moveRunner(int n , int m , int direct){
-    if(direct == 1 && Rx-2>=0){
-        if(map[Rx-2][Ry] == '.'){
+    if(direct == 8 && Rx-2>=0){
+        if(map[Rx-2][Ry] == '.' && map[Rx-1][Ry] != '|' && map[Rx-1][Ry] != '_'){
             map[Rx-2][Ry] = 'R';
             map[Rx][Ry] = '.';
             Rx-=2 ;
-        }
-        if(map[Rx-2][Ry] == 'C'){
+        } else if((map[Rx-2][Ry] == 'C' && map[Rx-1][Ry] != '|' && map[Rx-1][Ry] != '_')||(map[Rx-2][Ry] == 'H' && map[Rx-1][Ry] != '|' && map[Rx-1][Ry] != '_')){
             Rx-=2;
+        } else{
+            printf("Sorry !\nYou cant go there!!!\n\n");
         }
-    }else if(direct == 2 && Ry+2<=2*m-2){
-        if(map[Rx][Ry+2] == '.'){
+    }else if(direct == 6 && Ry+2<=2*m-2){
+        if(map[Rx][Ry+2] == '.' && map[Rx][Ry+1] != '|' && map[Rx][Ry+1] != '_'){
             map[Rx][Ry+2] = 'R';
             map[Rx][Ry] = '.';
             Ry+=2;
-        }
-        if(map[Rx][Ry+2] == 'C'){
+        } else if((map[Rx][Ry+2] == 'C' && map[Rx][Ry+1] != '|' && map[Rx][Ry+1] != '_')||(map[Rx][Ry+2] == 'H' && map[Rx][Ry+1] != '|' && map[Rx][Ry+1] != '_')){
             Ry+=2;
+        } else{
+            printf("Sorry !\nYou cant go there!!!\n\n");
         }
-    }else if(direct == 3 && Rx+2<=2*n-2){
-        if(map[Rx+2][Ry] == '.'){
+    }else if(direct == 2 && Rx+2<=2*n-2){
+        if(map[Rx+2][Ry] == '.' && map[Rx+1][Ry] != '|' && map[Rx+1][Ry] != '_'){
             map[Rx+2][Ry] = 'R';
             map[Rx][Ry] = '.';
             Rx+=2;
-        }
-        if(map[Rx+2][Ry] == 'C'){
+        }else if((map[Rx+2][Ry] == 'C' && map[Rx+1][Ry] != '|' && map[Rx+1][Ry] != '_')||(map[Rx+2][Ry] == 'H' && map[Rx+1][Ry] != '|' && map[Rx+1][Ry] != '_')){
             Rx+=2;
+        } else{
+            printf("Sorry !\nYou cant go there!!!\n\n");
         }
     }else if(direct == 4 && Ry-2>=0){
-        if(map[Rx][Ry-2] == '.'){
+        if(map[Rx][Ry-2] == '.' && map[Rx][Ry-1] != '|' && map[Rx][Ry-1] != '_'){
             map[Rx][Ry-2] = 'R';
             map[Rx][Ry] = '.';
             Ry-=2;
-        }
-        if(map[Rx][Ry-2] == 'C'){
+        }else if((map[Rx][Ry-2] == 'C' && map[Rx][Ry-1] != '|' && map[Rx][Ry-1] != '_')||(map[Rx][Ry-2] == 'H' && map[Rx][Ry-1] != '|' && map[Rx][Ry-1] != '_')){
             Ry-=2;
+        } else{
+            printf("Sorry !\nYou cant go there!!!\n\n");
         }
+    }
+}
+int moveHunter(){
+    if(Hy>Ry && map[Hx][Hy-2] == '.' && map[Hx][Hy-1] != '|' && map[Hx][Hy-1] == '_'){
+        map[Hx][Hy-2] = 'H';
+        map[Hx][Hy] = '.';
+        Hy-=2;
+    }else if(Hy<Ry && map[Hx][Hy+2] == '.' && map[Hx][Hy+1] != '_' && map[Hx][Hy+1] != '|'){
+        map[Hx][Hy+2] = 'H';
+        map[Hx][Hy] = '.';
+        Hy+=2;
+    }else if(Hx>Rx && map[Hx-2][Hy] == '.' && map[Hx-1][Hy] != '_' && map[Hx-1][Hy] != '|'){
+        map[Hx-2][Hy] = 'H';
+        map[Hx][Hy] = '.';
+        Hx-=2;
+    }else if(Hx<Rx && map[Hx+2][Hy] == '.' && map[Hx+1][Hy] != '_' && map[Hx+1][Hy] != '|'){
+        map[Hx+2][Hy] = 'H';
+        map[Hx][Hy] = '.';
+        Hx+=2;
     }
 }
 // win R 1
@@ -224,8 +247,7 @@ int moveRunner(int n , int m , int direct){
 int checkendgame(){
     if(Rx == Hx && Ry == Hy){
         return 2;
-    }
-    if(Rx == Cx && Ry == Cy){
+    }else if(Rx == Cx && Ry == Cy){
         return 1;
     }
     return 0;
@@ -244,11 +266,22 @@ int Game(int n , int m){
         }
         printf("\n");
         printf("\n");
+        printf("Now is the turn for hunters ...\nHa Ha Ha Ha Ha Ha ..........\n\n");
+        moveHunter();
+        moveHunter();
+        for (int i = 0; i < 2*n-1; i++) {
+            for (int j = 0; j < 2*m-1; j++) {
+                printf(" %c " , map[i][j]);
+            }
+            printf("\n");
+        }
+        printf("\n");
+        printf("\n");
         if(checkendgame() == 2){
-            printf("Hunters won :(");
+            printf("Hunters won :(\n\n");
             break;
         } else if(checkendgame() == 1){
-            printf("Congradulations\nYou won :)");
+            printf("Congradulations\nYou won :)\n\n");
             break;
         }
     }
@@ -260,7 +293,9 @@ int main() {
     scanf("%d %d" , &n ,&m);
 
     int H , R , W;
-    scanf("%d %d %d" , &H ,&R ,&W);
+    R = 1;
+    H = 1;
+    scanf("%d",&W);
 //    scanf("%d" , &W);
     int t = n*m;
     if(t%2 == 0){
