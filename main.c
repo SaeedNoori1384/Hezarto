@@ -6,7 +6,11 @@ char map[200][200];
 int visited[200][200];
 int ROWS, COLS;
 
-int Rx , Ry ,Hx , Hy, Cx ,Cy;
+int Cx ,Cy;
+int Rdecarty_x[50];
+int Rdecarty_y[50];
+int Hdecarty_x[50];
+int Hdecarty_y[50];
 int depth(int x1 , int y1 , int x2 , int y2){
     int a = x1-x2;
     int b = y1-y2;
@@ -179,96 +183,109 @@ void makerandommap(int n , int m , int R , int H ,int W){
 // 2   ___  right
 // 3    |   down
 // 4   ___  left
-int moveRunner(int n , int m , int direct){
-    if(direct == 8 && Rx-2>=0){
-        if(map[Rx-2][Ry] == '.' && map[Rx-1][Ry] != '|' && map[Rx-1][Ry] != '_'){
-            map[Rx-2][Ry] = 'R';
-            map[Rx][Ry] = '.';
-            Rx-=2 ;
-        } else if((map[Rx-2][Ry] == 'C' && map[Rx-1][Ry] != '|' && map[Rx-1][Ry] != '_')||(map[Rx-2][Ry] == 'H' && map[Rx-1][Ry] != '|' && map[Rx-1][Ry] != '_')){
-            Rx-=2;
+int moveRunner(int n , int m , int direct , int wich){
+    if(direct == 8 && Rdecarty_x[wich]-2>=0){
+        if(map[Rdecarty_x[wich]-2][Rdecarty_y[wich]] == '.' && map[Rdecarty_x[wich]-1][Rdecarty_y[wich]] != '|' && map[Rdecarty_x[wich]-1][Rdecarty_y[wich]] != '_'){
+            map[Rdecarty_x[wich]-2][Rdecarty_y[wich]] = 'R';
+            map[Rdecarty_x[wich]][Rdecarty_y[wich]] = '.';
+            Rdecarty_x[wich]-=2 ;
+        } else if((map[Rdecarty_x[wich]-2][Rdecarty_y[wich]] == 'C' && map[Rdecarty_x[wich]-1][Rdecarty_y[wich]] != '|' && map[Rdecarty_x[wich]-1][Rdecarty_y[wich]] != '_')||(map[Rdecarty_x[wich]-2][Rdecarty_y[wich]] == 'H' && map[Rdecarty_x[wich]-1][Rdecarty_y[wich]] != '|' && map[Rdecarty_x[wich]-1][Rdecarty_y[wich]] != '_')){
+            Rdecarty_x[wich]-=2;
         } else{
             printf("Sorry !\nYou cant go there!!!\n\n");
         }
-    }else if(direct == 6 && Ry+2<=2*m-2){
-        if(map[Rx][Ry+2] == '.' && map[Rx][Ry+1] != '|' && map[Rx][Ry+1] != '_'){
-            map[Rx][Ry+2] = 'R';
-            map[Rx][Ry] = '.';
-            Ry+=2;
-        } else if((map[Rx][Ry+2] == 'C' && map[Rx][Ry+1] != '|' && map[Rx][Ry+1] != '_')||(map[Rx][Ry+2] == 'H' && map[Rx][Ry+1] != '|' && map[Rx][Ry+1] != '_')){
-            Ry+=2;
+    }else if(direct == 6 && Rdecarty_y[wich]+2<=2*m-2){
+        if(map[Rdecarty_x[wich]][Rdecarty_y[wich]+2] == '.' && map[Rdecarty_x[wich]][Rdecarty_y[wich]+1] != '|' && map[Rdecarty_x[wich]][Rdecarty_y[wich]+1] != '_'){
+            map[Rdecarty_x[wich]][Rdecarty_y[wich]+2] = 'R';
+            map[Rdecarty_x[wich]][Rdecarty_y[wich]] = '.';
+            Rdecarty_y[wich]+=2;
+        } else if((map[Rdecarty_x[wich]][Rdecarty_y[wich]+2] == 'C' && map[Rdecarty_x[wich]][Rdecarty_y[wich]+1] != '|' && map[Rdecarty_x[wich]][Rdecarty_y[wich]+1] != '_')||(map[Rdecarty_x[wich]][Rdecarty_y[wich]+2] == 'H' && map[Rdecarty_x[wich]][Rdecarty_y[wich]+1] != '|' && map[Rdecarty_x[wich]][Rdecarty_y[wich]+1] != '_')){
+            Rdecarty_y[wich]+=2;
         } else{
             printf("Sorry !\nYou cant go there!!!\n\n");
         }
-    }else if(direct == 2 && Rx+2<=2*n-2){
-        if(map[Rx+2][Ry] == '.' && map[Rx+1][Ry] != '|' && map[Rx+1][Ry] != '_'){
-            map[Rx+2][Ry] = 'R';
-            map[Rx][Ry] = '.';
-            Rx+=2;
-        }else if((map[Rx+2][Ry] == 'C' && map[Rx+1][Ry] != '|' && map[Rx+1][Ry] != '_')||(map[Rx+2][Ry] == 'H' && map[Rx+1][Ry] != '|' && map[Rx+1][Ry] != '_')){
-            Rx+=2;
+    }else if(direct == 2 && Rdecarty_x[wich]+2<=2*n-2){
+        if(map[Rdecarty_x[wich]+2][Rdecarty_y[wich]] == '.' && map[Rdecarty_x[wich]+1][Rdecarty_y[wich]] != '|' && map[Rdecarty_x[wich]+1][Rdecarty_y[wich]] != '_'){
+            map[Rdecarty_x[wich]+2][Rdecarty_y[wich]] = 'R';
+            map[Rdecarty_x[wich]][Rdecarty_y[wich]] = '.';
+            Rdecarty_x[wich]+=2;
+        }else if((map[Rdecarty_x[wich]+2][Rdecarty_y[wich]] == 'C' && map[Rdecarty_x[wich]+1][Rdecarty_y[wich]] != '|' && map[Rdecarty_x[wich]+1][Rdecarty_y[wich]] != '_')||(map[Rdecarty_x[wich]+2][Rdecarty_y[wich]] == 'H' && map[Rdecarty_x[wich]+1][Rdecarty_y[wich]] != '|' && map[Rdecarty_x[wich]+1][Rdecarty_y[wich]] != '_')){
+            Rdecarty_x[wich]+=2;
         } else{
             printf("Sorry !\nYou cant go there!!!\n\n");
         }
-    }else if(direct == 4 && Ry-2>=0){
-        if(map[Rx][Ry-2] == '.' && map[Rx][Ry-1] != '|' && map[Rx][Ry-1] != '_'){
-            map[Rx][Ry-2] = 'R';
-            map[Rx][Ry] = '.';
-            Ry-=2;
-        }else if((map[Rx][Ry-2] == 'C' && map[Rx][Ry-1] != '|' && map[Rx][Ry-1] != '_')||(map[Rx][Ry-2] == 'H' && map[Rx][Ry-1] != '|' && map[Rx][Ry-1] != '_')){
-            Ry-=2;
+    }else if(direct == 4 && Rdecarty_y[wich]-2>=0){
+        if(map[Rdecarty_x[wich]][Rdecarty_y[wich]-2] == '.' && map[Rdecarty_x[wich]][Rdecarty_y[wich]-1] != '|' && map[Rdecarty_x[wich]][Rdecarty_y[wich]-1] != '_'){
+            map[Rdecarty_x[wich]][Rdecarty_y[wich]-2] = 'R';
+            map[Rdecarty_x[wich]][Rdecarty_y[wich]] = '.';
+            Rdecarty_y[wich]-=2;
+        }else if((map[Rdecarty_x[wich]][Rdecarty_y[wich]-2] == 'C' && map[Rdecarty_x[wich]][Rdecarty_y[wich]-1] != '|' && map[Rdecarty_x[wich]][Rdecarty_y[wich]-1] != '_')||(map[Rdecarty_x[wich]][Rdecarty_y[wich]-2] == 'H' && map[Rdecarty_x[wich]][Rdecarty_y[wich]-1] != '|' && map[Rdecarty_x[wich]][Rdecarty_y[wich]-1] != '_')){
+            Rdecarty_y[wich]-=2;
         } else{
             printf("Sorry !\nYou cant go there!!!\n\n");
         }
     }
 }
-int moveHunter(){
-    if(Hy>Ry && map[Hx][Hy-2] == '.' && map[Hx][Hy-1] != '|' && map[Hx][Hy-1] == '_'){
-        map[Hx][Hy-2] = 'H';
-        map[Hx][Hy] = '.';
-        Hy-=2;
-    }else if(Hy<Ry && map[Hx][Hy+2] == '.' && map[Hx][Hy+1] != '_' && map[Hx][Hy+1] != '|'){
-        map[Hx][Hy+2] = 'H';
-        map[Hx][Hy] = '.';
-        Hy+=2;
-    }else if(Hx>Rx && map[Hx-2][Hy] == '.' && map[Hx-1][Hy] != '_' && map[Hx-1][Hy] != '|'){
-        map[Hx-2][Hy] = 'H';
-        map[Hx][Hy] = '.';
-        Hx-=2;
-    }else if(Hx<Rx && map[Hx+2][Hy] == '.' && map[Hx+1][Hy] != '_' && map[Hx+1][Hy] != '|'){
-        map[Hx+2][Hy] = 'H';
-        map[Hx][Hy] = '.';
-        Hx+=2;
+int moveHunter(int H_random , int R_random ){
+    if(Hdecarty_y[H_random]>Rdecarty_y[R_random] && map[Hdecarty_x[H_random]][Hdecarty_y[H_random]-2] == '.' && map[Hdecarty_x[H_random]][Hdecarty_y[H_random]-1] != '|' && map[Hdecarty_x[H_random]][Hdecarty_y[H_random]-1] == '_'){
+        map[Hdecarty_x[H_random]][Hdecarty_y[H_random]-2] = 'H';
+        map[Hdecarty_x[H_random]][Hdecarty_y[H_random]] = '.';
+        Hdecarty_y[H_random]-=2;
+    }else if(Hdecarty_y[H_random]<Rdecarty_y[R_random] && map[Hdecarty_x[H_random]][Hdecarty_y[H_random]+2] == '.' && map[Hdecarty_x[H_random]][Hdecarty_y[H_random]+1] != '_' && map[Hdecarty_x[H_random]][Hdecarty_y[H_random]+1] != '|'){
+        map[Hdecarty_x[H_random]][Hdecarty_y[H_random]+2] = 'H';
+        map[Hdecarty_x[H_random]][Hdecarty_y[H_random]] = '.';
+        Hdecarty_y[H_random]+=2;
+    }else if(Hdecarty_x[H_random]>Rdecarty_x[R_random] && map[Hdecarty_x[H_random]-2][Hdecarty_y[H_random]] == '.' && map[Hdecarty_x[H_random]-1][Hdecarty_y[H_random]] != '_' && map[Hdecarty_x[H_random]-1][Hdecarty_y[H_random]] != '|'){
+        map[Hdecarty_x[H_random]-2][Hdecarty_y[H_random]] = 'H';
+        map[Hdecarty_x[H_random]][Hdecarty_y[H_random]] = '.';
+        Hdecarty_x[H_random]-=2;
+    }else if(Hdecarty_x[H_random]<Rdecarty_x[R_random] && map[Hdecarty_x[H_random]+2][Hdecarty_y[H_random]] == '.' && map[Hdecarty_x[H_random]+1][Hdecarty_y[H_random]] != '_' && map[Hdecarty_x[H_random]+1][Hdecarty_y[H_random]] != '|'){
+        map[Hdecarty_x[H_random]+2][Hdecarty_y[H_random]] = 'H';
+        map[Hdecarty_x[H_random]][Hdecarty_y[H_random]] = '.';
+        Hdecarty_x[H_random]+=2;
     }
 }
 // win R 1
 // win H 2
 // not end 0
-int checkendgame(){
-    if(Rx == Hx && Ry == Hy){
-        return 2;
-    }else if(Rx == Cx && Ry == Cy){
-        return 1;
+int checkendgame(int R , int H){
+    for (int i = 0; i < R; i++) {
+        for (int j = 0; j < H; j++) {
+            if(Rdecarty_x[i] == Hdecarty_x[j] && Rdecarty_y[i] == Hdecarty_y[j]){
+                return 2;
+            }
+        }
+    }
+    for (int i = 0; i < R; i++){
+        if(Rdecarty_x[i] == Cx && Rdecarty_y[i] == Cy){
+            return 1;
+        }
     }
     return 0;
-}
-int Game(int n , int m){
+}       //                      H            R
+int Game(int n , int m  , int random , int mohre){
     printf("\n\nStart of game : ...\n\n");
     int direct ;
     while (1){
-        scanf("%d" , &direct);
-        moveRunner(n , m , direct);
-        for (int i = 0; i < 2*n-1; i++) {
-            for (int j = 0; j < 2*m-1; j++) {
-                printf(" %c " , map[i][j]);
+        for (int i = 0; i < mohre; i++) {
+            scanf("%d" , &direct);
+            moveRunner(n , m , direct , i);
+            for (int i = 0; i < 2*n-1; i++) {
+                for (int j = 0; j < 2*m-1; j++) {
+                    printf(" %c " , map[i][j]);
+                }
+                printf("\n");
             }
             printf("\n");
+            printf("\n");
         }
-        printf("\n");
-        printf("\n");
         printf("Now is the turn for hunters ...\nHa Ha Ha Ha Ha Ha ..........\n\n");
-        moveHunter();
-        moveHunter();
+        for (int i = 0; i < random; i++) {
+            int t = rand()%mohre;  //  R_random
+            int p = rand()%random; //  H_random
+            moveHunter(p , t);
+            moveHunter(p , t);
+        }
         for (int i = 0; i < 2*n-1; i++) {
             for (int j = 0; j < 2*m-1; j++) {
                 printf(" %c " , map[i][j]);
@@ -277,10 +294,10 @@ int Game(int n , int m){
         }
         printf("\n");
         printf("\n");
-        if(checkendgame() == 2){
+        if(checkendgame(mohre,random) == 2){
             printf("Hunters won :(\n\n");
             break;
-        } else if(checkendgame() == 1){
+        } else if(checkendgame(mohre,random) == 1){
             printf("Congradulations\nYou won :)\n\n");
             break;
         }
@@ -293,9 +310,9 @@ int main() {
     scanf("%d %d" , &n ,&m);
 
     int H , R , W;
-    R = 1;
-    H = 1;
-    scanf("%d",&W);
+//    R = 1;
+//    H = 1;
+    scanf("%d %d %d",&R, &H, &W);
 //    scanf("%d" , &W);
     int t = n*m;
     if(t%2 == 0){
@@ -314,19 +331,23 @@ int main() {
     } else{
         printf("No Exist !!!\n");
     }
+    int r = 0;
     for (int i = 0; i < 2*n-1; i++) {
         for (int j = 0; j < 2*m-1; j++) {
             if(map[i][j] == 'R'){
-                Rx = i;
-                Ry = j;
+                Rdecarty_x[r]= i ;
+                Rdecarty_y[r] = j;
+                r++;
             }
         }
     }
+    r = 0;
     for (int i = 0; i < 2*n-1; i++) {
         for (int j = 0; j < 2*m-1; j++) {
             if(map[i][j] == 'H'){
-                Hx = i;
-                Hy = j;
+                Hdecarty_x[r] = i;
+                Hdecarty_y[r] = j;
+                r++;
             }
         }
     }
@@ -338,6 +359,14 @@ int main() {
             }
         }
     }
-    Game(n , m);
+//    for (int i = 0; i < R; i++) {
+//        printf("%d ",Rdecarty_x[i]);
+//        printf(" %d\n",Rdecarty_y[i]);
+//    }
+//    for (int i = 0; i < H; i++) {
+//        printf("%d ",Hdecarty_x[i]);
+//        printf(" %d\n",Hdecarty_y[i]);
+//    }
+    Game(n , m ,H , R);
     return 0;
 }
